@@ -1,12 +1,12 @@
 const express = require('express');
 const productsController = require('../controllers/productsController');
-// const validation = require('../middlewares/validation');
+const validation = require('../middlewares/validation');
 
 const router = express.Router();
 
 router
   .get('/', productsController.getAll)
   .get('/:id', productsController.getById)
-  .post('/', productsController.insertIntoDatabase);
+  .post('/', validation.validateName, productsController.insertIntoDatabase);
 
 module.exports = router;
