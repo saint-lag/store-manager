@@ -23,7 +23,11 @@ const getById = async (req, res) => {
   try {
     const result = await productsServices.getById(id);
 
-    if (!result) res.status(httpStatus.HTTP_STATUS_NOT_FOUND).json({ message: 'Not found' });
+    if (!result) {
+      return res.status(
+        httpStatus.HTTP_STATUS_NOT_FOUND,
+      ).json({ message: 'Product not found' });
+    }
     return res.status(httpStatus.HTTP_STATUS_OK).json(result);
   } catch (err) {
     return res.status(
