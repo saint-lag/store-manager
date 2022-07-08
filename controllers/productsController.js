@@ -33,9 +33,28 @@ const getById = async (req, res) => {
     return res.status(
       httpStatus.HTTP_STATUS_INTERNAL_SERVER,
     ).json({
-      message: 'Product not found',
+      message: 'Internal Server Error',
     });
   }
 };
 
-module.exports = { getAll, getById };
+const insertIntoDatabase = async (req, res) => {
+  const { name } = req.body;
+  try {
+    const result = await productsServices.insertIntoDatabase(name);
+
+    if (!result) {
+      return res.status(
+        httpStatus.HTTP_STATUS_INTERNAL_SERVER,
+      ).json({ message: 'Internal Error' });
+    }
+
+    return res.status(httpStatus.HTTP_STATUS_CREATED).json({ id: result.insertId, name });
+  } catch (err) {
+    return res.status(
+      httpStatus.HTTP_STATUS_INTERNAL_SERVER,
+    ).json({ message: 'Internal Server Error' });
+  }
+};
+
+module.exports = { getAll, getById, insertIntoDatabase };

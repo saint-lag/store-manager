@@ -6,6 +6,7 @@ const router = express.Router();
 
 router
   .get('/', productsController.getAll)
-  .get('/:id', productsController.getById);
+  .get('/:id', productsController.getById)
+  .post('/', productsController.insertIntoDatabase);
 
 module.exports = router;

@@ -20,4 +20,9 @@ const updateById = async (id) => {
   return result;
 };
 
-module.exports = { getAll, getById, updateById };
+const insertIntoDatabase = async (name) => {
+  const result = await productsModel.insertIntoDatabase(name);
+  return result || null;
+};
+
+module.exports = { getAll, getById, updateById, insertIntoDatabase };

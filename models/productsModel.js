@@ -32,9 +32,10 @@ const searchByName = async (name) => {
   return rows;
 };
 
-const insert = async (name) => { 
-  const query = `INSERT INTO ${DATABASE}.products`;
-  return { name, query };
+const insertIntoDatabase = async (name) => { 
+  const query = `INSERT INTO ${DATABASE}.products (name) VALUES (?)`;
+  const [rows] = await connection.execute(query, [name]);
+  return rows;
 };
 
-module.exports = { getAll, getById, updateById, deleteById, searchByName, insert };
+module.exports = { getAll, getById, updateById, deleteById, searchByName, insertIntoDatabase };
