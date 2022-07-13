@@ -1,6 +1,6 @@
 const connection = require('../helpers/connection');
 
-const DATABASE = 'StoreManager';
+const { DATABASE } = require('../helpers');
 
 const getAll = async () => {
   const query = `SELECT * FROM ${DATABASE}.products ORDER BY id ASC`;
@@ -14,15 +14,15 @@ const getById = async (id) => {
   return rows[0];
 };
 
-const updateById = async (name, id) => {
-  const query = `UPDATE ${DATABASE}.products SET name = ? WHERE id = ?`;
-  const [rows] = await connection.execute(query, [name, id]);
-  return rows;
-};
-
 const deleteById = async (id) => { 
   const query = `DELETE FROM ${DATABASE}.products WHERE id = ?`;
   const [rows] = await connection.execute(query, [id]);
+  return rows;
+};
+
+const updateById = async (id, name) => {
+  const query = `UPDATE ${DATABASE}.products SET name = ? WHERE id = ?`;
+  const [rows] = await connection.execute(query, [name, id]);
   return rows;
 };
 

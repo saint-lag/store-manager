@@ -11,13 +11,22 @@ const getById = async (id) => {
   return result || null;
 };
 
-const updateById = async (id) => {
-  const product = getById(id);
+const deleteById = async (id) => { 
+  const product = await getById(id);
+
+  if (!product) return { message: 'Not found', code: httpStatus.HTTP_STATUS_NOT_FOUND };
+
+  const result = await productsModel.deleteById(id);
+  return result || null;
+};
+
+const updateById = async (id, name) => {
+  const product = await getById(id);
 
   if (!product) return { message: 'Not found', code: httpStatus.HTTP_STATUS_NOT_FOUND };
     
-  const result = await productsModel.updateById(id);
-  return result;
+  const result = await productsModel.updateById(id, name);
+  return result || null;
 };
 
 const insertIntoDatabase = async (name) => {
@@ -25,4 +34,4 @@ const insertIntoDatabase = async (name) => {
   return result || null;
 };
 
-module.exports = { getAll, getById, updateById, insertIntoDatabase };
+module.exports = { getAll, getById, updateById, insertIntoDatabase, deleteById };
