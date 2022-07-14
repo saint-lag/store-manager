@@ -1,24 +1,18 @@
 const salesModel = require('../models/salesModel');
-const httpStatus = require('../helpers/http.status.codes');
+// const httpStatus = require('../helpers/http.status.codes');
 
 const insertSaleIntoDatabase = async (sale) => {
   const { productId, quantity } = sale;
-  const saleId = salesModel.generateNewSaleId();
-
-  if (!saleId) {
-    return {
-      message: 'Internal Server Error', code: httpStatus.HTTP_STATUS_INTERNAL_SERVER,
-    };
-  }
-
-  const result = salesModel.insertSaleIntoDatabase(saleId, productId, quantity);
-
-  return result || null;
+  await salesModel.generateNewSaleId();
+  const saleId = await salesModel.getLastSaleId();
+  const result = await salesModel.insertSaleIntoDatabase(saleId, productId, quantity);
+  return result;
 };
 
 const insertSalesIntoDatabase = async (sales) => {
-  const result = sales.map((s) => insertSaleIntoDatabase(s));
-  return result || [];
+  await sales.forEach(async (s) => insertSaleIntoDatabase(s));
+
+  return sales || [];
 };
 
 module.exports = { insertSalesIntoDatabase };

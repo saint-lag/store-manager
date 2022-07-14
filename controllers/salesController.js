@@ -4,10 +4,8 @@ const httpStatus = require('../helpers/http.status.codes');
 
 const insertSalesIntoDatabase = async (req, res) => {
   const sales = req.body;
-  // const sales = JSON.parse(Object.values(request)[0]);
-  console.log(sales);
   try {
-    const result = salesServices.insertSalesIntoDatabase(sales);
+    const result = await salesServices.insertSalesIntoDatabase(sales);
 
     if (!result) {
       return res

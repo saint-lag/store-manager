@@ -51,20 +51,27 @@ const validateProductId = (productId) => {
   return null;
 };
 
+const validateSalesLenght = (sales) => {
+  if (Object.entries(sales).length === 0) {
+    return {
+      statusCode: httpStatus.HTTP_STATUS_BAD_REQUEST, message: 'BAD REQUEST',
+    };
+  }
+  return false;
+};
+
 const validateSales = (req, res, next) => {
   const sales = req.body;
-  const arr = JSON.parse(Object.values(sales)[0]);
-  arr.forEach((s) => {
+  const result = validateSalesLenght(sales);
+  if (result) return res.status(result.statusCode).json({ message: result.message });
+  sales.forEach((s) => {
     const { productId, quantity } = s;
     const productIdValidation = validateProductId(productId);
     const quantityValidation = validateQuantity(quantity);
     if (productIdValidation) {
       const { statusCode, message } = productIdValidation;
-      return res.status(
-        statusCode,
-      ).json({ message });
-    }
-    if (quantityValidation) {
+      return res.status(statusCode).json({ message });
+    } if (quantityValidation) {
       const { statusCode, message } = quantityValidation;
       return res.status(statusCode).json({ message });
     }
