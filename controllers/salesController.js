@@ -12,7 +12,7 @@ const insertSalesIntoDatabase = async (req, res) => {
         .status(httpStatus.HTTP_STATUS_INTERNAL_SERVER).json({ message: 'Internal Server Error' });
     }
 
-    return res.status(httpStatus.HTTP_STATUS_CREATED).json({ message: result });
+    return res.status(httpStatus.HTTP_STATUS_CREATED).json(result);
   } catch (err) {
     return res
       .status(httpStatus.HTTP_STATUS_INTERNAL_SERVER).json({ message: 'Internal Server Error' });

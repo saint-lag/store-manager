@@ -33,15 +33,17 @@ const validateQuantity = (quantity) => {
       message: '"quantity" must be greater than or equal to 1',
     };
   }
+  return null;
 };
 
-const validateProductId = (productId) => {
+const validateProductId = async (productId) => {
   if (!productId) {
     return {
       statusCode: httpStatus.HTTP_STATUS_BAD_REQUEST, message: '"productId" is required',
     };
   }
-  const product = productsModel.getById(productId);
+  const product = await productsModel.getById(productId);
+  console.log(product);
   if (!product) {
     return {
       statusCode: httpStatus.HTTP_STATUS_NOT_FOUND,
@@ -60,13 +62,13 @@ const validateSalesLenght = (sales) => {
   return false;
 };
 
-const validateSales = (req, res, next) => {
+const validateSales = async (req, res, next) => {
   const sales = req.body;
   const result = validateSalesLenght(sales);
   if (result) return res.status(result.statusCode).json({ message: result.message });
-  sales.forEach((s) => {
+  sales.forEach(async (s) => {
     const { productId, quantity } = s;
-    const productIdValidation = validateProductId(productId);
+    const productIdValidation = await validateProductId(productId);
     const quantityValidation = validateQuantity(quantity);
     if (productIdValidation) {
       const { statusCode, message } = productIdValidation;
