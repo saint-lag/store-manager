@@ -1,5 +1,6 @@
 const httpStatus = require('../helpers/http.status.codes');
 const productsModel = require('../models/productsModel');
+const salesModel = require('../models/salesModel');
 
 const MIN_NAME_LENGTH = 5;
 const MIN_SALE_QUANTITY = 0;
@@ -98,4 +99,15 @@ const validateSales = async (req, res, next) => {
   next();
 };
 
-module.exports = { validateName, validateSales };
+const validateSaleId = async (req, res, next) => {
+  const { id } = req.params;
+  const sale = await salesModel.getSaleById(id);
+  console.log(sale);
+  if (sale.length === 0) {
+    return res.status(httpStatus.HTTP_STATUS_NOT_FOUND)
+      .json({ message: 'Sale not found' });
+  }
+  next();
+};
+
+module.exports = { validateName, validateSales, validateSaleId };

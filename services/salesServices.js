@@ -1,6 +1,16 @@
 const salesModel = require('../models/salesModel');
 // const httpStatus = require('../helpers/http.status.codes');
 
+const getSaleById = async (id) => {
+  const result = await salesModel.getSaleById(id);
+  return result[0] || null;
+};
+
+const getSaleProductsById = async (id) => {
+  const result = await salesModel.getSaleProductsById(id);
+  return result || null;
+};
+
 const insertSaleIntoDatabase = async (saleId, sale) => {
   const { productId, quantity } = sale;
   const result = await salesModel.insertSaleIntoDatabase(saleId, productId, quantity);
@@ -16,4 +26,4 @@ const insertSalesIntoDatabase = async (sales) => {
   return { id, itemsSold: sales };
 };
 
-module.exports = { insertSalesIntoDatabase };
+module.exports = { insertSalesIntoDatabase, getSaleById, getSaleProductsById };

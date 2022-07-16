@@ -14,6 +14,18 @@ const getLastSaleId = async () => {
   return rows;
 };
 
+const getSaleById = async (id) => {
+  const query = `SELECT * FROM ${DATABASE}.sales WHERE id = ? ORDER BY id ASC LIMIT 1`;
+  const [rows] = await connection.execute(query, [id]);
+  return rows;
+};
+
+const getSaleProductsById = async (id) => {
+  const query = `SELECT * FROM ${DATABASE}.sales_products WHERE sale_id = ?`;
+  const [rows] = await connection.execute(query, [id]);
+  return rows;
+};
+
 const insertSaleIntoDatabase = async (saleId, productId, quantity) => {
   const query = `INSERT INTO ${DATABASE}.sales_products `
     + '(sale_id, product_id, quantity) VALUES (?, ?, ?)';
@@ -21,4 +33,10 @@ const insertSaleIntoDatabase = async (saleId, productId, quantity) => {
   return rows;
 };
 
-module.exports = { insertSaleIntoDatabase, generateNewSaleId, getLastSaleId };
+module.exports = {
+  insertSaleIntoDatabase,
+  generateNewSaleId,
+  getLastSaleId,
+  getSaleById,
+  getSaleProductsById,
+};
