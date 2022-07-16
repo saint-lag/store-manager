@@ -102,7 +102,6 @@ const validateSales = async (req, res, next) => {
 const validateSaleId = async (req, res, next) => {
   const { id } = req.params;
   const sale = await salesModel.getSaleById(id);
-  console.log(sale);
   if (sale.length === 0) {
     return res.status(httpStatus.HTTP_STATUS_NOT_FOUND)
       .json({ message: 'Sale not found' });

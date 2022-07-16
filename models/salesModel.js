@@ -26,6 +26,18 @@ const getSaleProductsById = async (id) => {
   return rows;
 };
 
+const getAllSales = async () => {
+  const query = `SELECT * FROM ${DATABASE}.sales`;
+  const [rows] = await connection.execute(query);
+  return rows;
+};
+
+const getAllSalesProducts = async () => {
+  const query = `SELECT * FROM ${DATABASE}.sales_products`;
+  const [rows] = await connection.execute(query);
+  return rows;
+};
+
 const insertSaleIntoDatabase = async (saleId, productId, quantity) => {
   const query = `INSERT INTO ${DATABASE}.sales_products `
     + '(sale_id, product_id, quantity) VALUES (?, ?, ?)';
@@ -39,4 +51,6 @@ module.exports = {
   getLastSaleId,
   getSaleById,
   getSaleProductsById,
+  getAllSales,
+  getAllSalesProducts,
 };

@@ -11,6 +11,16 @@ const getSaleProductsById = async (id) => {
   return result || null;
 };
 
+const getAllSales = async () => {
+  const result = await salesModel.getAllSales();
+  return result || [];
+};
+
+const getAllSalesProducts = async () => {
+  const result = await salesModel.getAllSalesProducts();
+  return result || [];
+};
+
 const insertSaleIntoDatabase = async (saleId, sale) => {
   const { productId, quantity } = sale;
   const result = await salesModel.insertSaleIntoDatabase(saleId, productId, quantity);
@@ -26,4 +36,10 @@ const insertSalesIntoDatabase = async (sales) => {
   return { id, itemsSold: sales };
 };
 
-module.exports = { insertSalesIntoDatabase, getSaleById, getSaleProductsById };
+module.exports = {
+  insertSalesIntoDatabase,
+  getSaleById,
+  getSaleProductsById,
+  getAllSales,
+  getAllSalesProducts,
+};
