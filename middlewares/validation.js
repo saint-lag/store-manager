@@ -22,12 +22,12 @@ const validateName = (req, res, next) => {
 };
 
 const validateQuantity = (quantity) => {
-  if (!quantity) {
+  if (!quantity && quantity !== 0) {
     return {
       statusCode: httpStatus.HTTP_STATUS_BAD_REQUEST, message: '"quantity" is required',
     };
   }
-  if (quantity <= MIN_SALE_QUANTITY) {
+  if (Number(quantity) <= MIN_SALE_QUANTITY) {
     return {
       statusCode: httpStatus.HTTP_STATUS_INVALID_ARGUMENT,
       message: '"quantity" must be greater than or equal to 1',
@@ -43,7 +43,6 @@ const validateProductId = async (productId) => {
     };
   }
   const product = await productsModel.getById(productId);
-  console.log(product);
   if (!product) {
     return {
       statusCode: httpStatus.HTTP_STATUS_NOT_FOUND,
@@ -62,22 +61,40 @@ const validateSalesLenght = (sales) => {
   return false;
 };
 
+const salesForEach = async (sales) => {
+  const result = { statusCode: null, message: null };
+  const resulter = (obj) => {
+    result.statusCode = obj.statusCode;
+    result.message = obj.message;
+  };
+  for (let i = 0; i < sales.length; i += 1) {
+    const { productId, quantity } = sales[i];
+    const productIdValidation = await validateProductId(productId);
+    const quantityValidation = validateQuantity(quantity);
+
+    if (productIdValidation) {
+      resulter(productIdValidation);
+      return result;
+    } if (quantityValidation) {
+      resulter(quantityValidation);
+      return result;
+    }
+  }
+
+  return result;
+};
+
 const validateSales = async (req, res, next) => {
   const sales = req.body;
   const result = validateSalesLenght(sales);
   if (result) return res.status(result.statusCode).json({ message: result.message });
-  sales.forEach(async (s) => {
-    const { productId, quantity } = s;
-    const productIdValidation = await validateProductId(productId);
-    const quantityValidation = validateQuantity(quantity);
-    if (productIdValidation) {
-      const { statusCode, message } = productIdValidation;
-      return res.status(statusCode).json({ message });
-    } if (quantityValidation) {
-      const { statusCode, message } = quantityValidation;
-      return res.status(statusCode).json({ message });
-    }
-  });
+
+  const invalidResponse = await salesForEach(sales);
+
+  if (invalidResponse.statusCode) {
+    return res.status(invalidResponse.statusCode)
+      .json({ message: invalidResponse.message });
+  }
   next();
 };
 
