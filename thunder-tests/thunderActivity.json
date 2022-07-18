@@ -18,18 +18,13 @@
     "colId": "history",
     "containerId": "",
     "name": "localhost:3000/sales",
-    "url": "localhost:3000/products/4",
-    "method": "PUT",
+    "url": "localhost:3000/sales/",
+    "method": "POST",
     "sortNum": 0,
     "created": "2022-07-13T21:42:59.410Z",
-    "modified": "2022-07-18T14:04:56.164Z",
+    "modified": "2022-07-18T15:01:32.112Z",
     "headers": [],
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n    \"name\": \"sorvete\"\n}",
-      "form": []
-    },
     "tests": []
   }
 ]

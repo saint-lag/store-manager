@@ -36,10 +36,16 @@ const insertSalesIntoDatabase = async (sales) => {
   return { id, itemsSold: sales };
 };
 
+const deleteSaleById = async (id) => { 
+  const result = await salesModel.deleteSaleById(id);
+  return result || null;
+};
+
 module.exports = {
   insertSalesIntoDatabase,
   getSaleById,
   getSaleProductsById,
   getAllSales,
   getAllSalesProducts,
+  deleteSaleById,
 };
