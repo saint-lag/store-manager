@@ -6,7 +6,7 @@ const { INTERNAL_SERVER_ERROR } = require('../helpers');
 
 const salesProductsMap = async (salesProducts, sales) => salesProducts.map((obj) => {
   const { date } = sales.find((s) => s.id === obj.sale_id);
-  
+
   return {
     saleId: obj.sale_id,
     date,
@@ -73,7 +73,7 @@ const insertSalesIntoDatabase = async (req, res) => {
   }
 };
 
-const deleteSaleById = async (req, res) => { 
+const deleteSaleById = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await salesServices.deleteSaleById(id);
@@ -90,4 +90,28 @@ const deleteSaleById = async (req, res) => {
   }
 };
 
-module.exports = { insertSalesIntoDatabase, getSaleById, getAllSales, deleteSaleById };
+const updateSaleById = async (req, res) => {
+  const { id } = req.params;
+  const sales = req.body;
+  try {
+    const result = await salesServices.updateSaleById(sales, id);
+
+    if (!result) {
+      return res
+        .status(httpStatus.HTTP_STATUS_INTERNAL_SERVER).json({ message: INTERNAL_SERVER_ERROR });
+    }
+
+    return res.status(httpStatus.HTTP_STATUS_OK).json(result);
+  } catch (err) {
+    return res
+      .status(httpStatus.HTTP_STATUS_INTERNAL_SERVER).json({ message: INTERNAL_SERVER_ERROR });
+  }
+};
+
+module.exports = {
+  insertSalesIntoDatabase,
+  getSaleById,
+  getAllSales,
+  deleteSaleById,
+  updateSaleById,
+};

@@ -36,8 +36,20 @@ const insertSalesIntoDatabase = async (sales) => {
   return { id, itemsSold: sales };
 };
 
-const deleteSaleById = async (id) => { 
+const deleteSaleById = async (id) => {
   const result = await salesModel.deleteSaleById(id);
+  return result || null;
+};
+
+const updateSaleById = async (sales, saleId) => {
+  await sales.forEach(async (s) => {
+    const { productId, quantity } = s;
+    return salesModel.updateSaleById(productId, saleId, quantity);
+  });
+  const result = {
+    saleId,
+    itemsUpdated: sales,
+  };
   return result || null;
 };
 
@@ -48,4 +60,5 @@ module.exports = {
   getAllSales,
   getAllSalesProducts,
   deleteSaleById,
+  updateSaleById,
 };
