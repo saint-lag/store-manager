@@ -14,7 +14,7 @@ const getById = async (id) => {
 const deleteById = async (id) => { 
   const product = await getById(id);
 
-  if (!product) return { message: 'Not found', code: httpStatus.HTTP_STATUS_NOT_FOUND };
+  if (!product) return { message: 'Product not found', code: httpStatus.HTTP_STATUS_NOT_FOUND };
 
   const result = await productsModel.deleteById(id);
   return result || null;
@@ -23,7 +23,7 @@ const deleteById = async (id) => {
 const updateById = async (id, name) => {
   const product = await getById(id);
 
-  if (!product) return { message: 'Not found', code: httpStatus.HTTP_STATUS_NOT_FOUND };
+  if (!product) return { message: 'Product not found', code: httpStatus.HTTP_STATUS_NOT_FOUND };
     
   const result = await productsModel.updateById(id, name);
   return result || null;
