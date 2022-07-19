@@ -6,6 +6,7 @@ const router = express.Router();
 
 router
   .get('/', productsController.getAll)
+  .get('/search', productsController.searchProduct)
   .get('/:id', productsController.getById)
   .post('/', validation.validateName, productsController.insertIntoDatabase)
   .put(

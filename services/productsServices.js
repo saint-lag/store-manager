@@ -11,7 +11,7 @@ const getById = async (id) => {
   return result || null;
 };
 
-const deleteById = async (id) => { 
+const deleteById = async (id) => {
   const product = await getById(id);
 
   if (!product) return { message: 'Product not found', code: httpStatus.HTTP_STATUS_NOT_FOUND };
@@ -24,7 +24,7 @@ const updateById = async (id, name) => {
   const product = await getById(id);
 
   if (!product) return { message: 'Product not found', code: httpStatus.HTTP_STATUS_NOT_FOUND };
-    
+
   const result = await productsModel.updateById(id, name);
   return result || null;
 };
@@ -34,4 +34,16 @@ const insertIntoDatabase = async (name) => {
   return result || null;
 };
 
-module.exports = { getAll, getById, updateById, insertIntoDatabase, deleteById };
+const searchProduct = async (searchTerm) => {
+  const result = await productsModel.searchProduct(searchTerm);
+  return result || [];
+};
+
+module.exports = {
+  getAll,
+  getById,
+  updateById,
+  insertIntoDatabase,
+  deleteById,
+  searchProduct,
+};

@@ -2,6 +2,11 @@ const productsServices = require('../services/productsServices');
 
 const httpStatus = require('../helpers/http.status.codes');
 
+const {
+  INTERNAL_SERVER_ERROR,
+  PRODUCT_NOT_FOUND,
+} = require('../helpers');
+
 const getAll = async (_req, res) => {
   try {
     const result = await productsServices.getAll();
@@ -13,7 +18,7 @@ const getAll = async (_req, res) => {
     return res.status(
       httpStatus.HTTP_STATUS_INTERNAL_SERVER,
     ).json({
-      message: 'HTTP_STATUS_INTERNAL_SERVER',
+      message: INTERNAL_SERVER_ERROR,
     });
   }
 };
@@ -26,14 +31,14 @@ const getById = async (req, res) => {
     if (!result) {
       return res.status(
         httpStatus.HTTP_STATUS_NOT_FOUND,
-      ).json({ message: 'Product not found' });
+      ).json({ message: PRODUCT_NOT_FOUND });
     }
     return res.status(httpStatus.HTTP_STATUS_OK).json(result);
   } catch (err) {
     return res.status(
       httpStatus.HTTP_STATUS_INTERNAL_SERVER,
     ).json({
-      message: 'Internal Server Error',
+      message: INTERNAL_SERVER_ERROR,
     });
   }
 };
@@ -46,14 +51,14 @@ const insertIntoDatabase = async (req, res) => {
     if (!result) {
       return res.status(
         httpStatus.HTTP_STATUS_INTERNAL_SERVER,
-      ).json({ message: 'Internal Error' });
+      ).json({ message: INTERNAL_SERVER_ERROR });
     }
 
     return res.status(httpStatus.HTTP_STATUS_CREATED).json({ id: result.insertId, name });
   } catch (err) {
     return res.status(
       httpStatus.HTTP_STATUS_INTERNAL_SERVER,
-    ).json({ message: 'Internal Server Error' });
+    ).json({ message: INTERNAL_SERVER_ERROR });
   }
 };
 
@@ -65,7 +70,7 @@ const updateById = async (req, res) => {
     if (!result) {
       return res.status(
         httpStatus.HTTP_STATUS_INTERNAL_SERVER,
-      ).json({ message: 'Internal Error' });
+      ).json({ message: INTERNAL_SERVER_ERROR });
     }
     if (result.code) {
       return res.status(result.code).json({ message: result.message });
@@ -74,11 +79,11 @@ const updateById = async (req, res) => {
   } catch (err) {
     return res.status(
       httpStatus.HTTP_STATUS_INTERNAL_SERVER,
-    ).json({ message: 'Internal Server Error' });
+    ).json({ message: INTERNAL_SERVER_ERROR });
   }
 };
 
-const deleteById = async (req, res) => { 
+const deleteById = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await productsServices.deleteById(id);
@@ -86,7 +91,7 @@ const deleteById = async (req, res) => {
     if (!result) {
       return res.status(
         httpStatus.HTTP_STATUS_INTERNAL_SERVER,
-      ).json({ message: 'Internal Error' });
+      ).json({ message: INTERNAL_SERVER_ERROR });
     }
     if (result.code) {
       return res.status(result.code).json({ message: result.message });
@@ -95,8 +100,32 @@ const deleteById = async (req, res) => {
   } catch (err) {
     return res.status(
       httpStatus.HTTP_STATUS_INTERNAL_SERVER,
-    ).json({ message: 'Internal Server Error' });
+    ).json({ message: INTERNAL_SERVER_ERROR });
   }
 };
 
-module.exports = { getAll, getById, insertIntoDatabase, updateById, deleteById };
+const searchProduct = async (req, res) => {
+  const { q } = req.query;
+  try {
+    const result = await productsServices.searchProduct(q);
+    if (!result) {
+      return res.status(
+        httpStatus.HTTP_STATUS_INTERNAL_SERVER,
+      ).json({ message: INTERNAL_SERVER_ERROR });
+    }
+    return res.status(httpStatus.HTTP_STATUS_OK).json(result);
+  } catch (error) {
+    return res.status(
+      httpStatus.HTTP_STATUS_INTERNAL_SERVER,
+    ).json({ message: INTERNAL_SERVER_ERROR });
+  }
+};
+
+module.exports = {
+  getAll,
+  getById,
+  insertIntoDatabase,
+  updateById,
+  deleteById,
+  searchProduct,
+};
