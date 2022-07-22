@@ -43,27 +43,28 @@ const validateSalesLenght = (sales) => {
   return false;
 };
 
+const salesForEachPromises = async (sales) => sales.map(async (s) => {
+  const productIdValidation = await validateProductId(s.productId);
+  const quantityValidation = validateQuantity(s.quantity);
+  return ({ productIdValidation, quantityValidation });
+});
+
 const salesForEach = async (sales) => {
-  const result = { statusCode: null, message: null };
+  const resultArr = { statusCode: null, message: null };
   const resulter = (obj) => {
-    result.statusCode = obj.statusCode;
-    result.message = obj.message;
+    resultArr.statusCode = obj.statusCode;
+    resultArr.message = obj.message;
   };
-  for (let i = 0; i < sales.length; i += 1) {
-    const { productId, quantity } = sales[i];
-    const productIdValidation = await validateProductId(productId);
-    const quantityValidation = validateQuantity(quantity);
-
-    if (productIdValidation) {
-      resulter(productIdValidation);
-      return result;
-    } if (quantityValidation) {
-      resulter(quantityValidation);
-      return result;
+  const promises = await salesForEachPromises(sales);
+  await Promise.all(promises).then((arr) => arr.map((obj) => {
+    if (obj.productIdValidation) {
+      resulter(obj.productIdValidation); return resultArr;
+    } if (obj.quantityValidation) {
+      resulter(obj.quantityValidation); return obj.resultArr;
     }
-  }
-
-  return result;
+    return null;
+  }));
+  return resultArr || { statusCode: null, message: null };
 };
 
 module.exports = { validateSalesLenght, salesForEach };
