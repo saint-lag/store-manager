@@ -15,9 +15,9 @@ describe('Testing productsController', async () => {
     before(async () => {
       sinon.stub(service, 'getAll').resolves();
     });
-    after(async() => {
-      service.getAll.restore();
-    })
+    after(async () => {
+      sinon.stub(service, 'getAll').restore();
+    });
     it('Should return STATUS 200 when solved', async () => {
       const res = {
         status: sinon.stub().callsFake(() => res),
@@ -57,5 +57,5 @@ describe('Testing productsController', async () => {
       await controller.getById(req, res);
       chai.expect(res.status.getCall(0).args[0]).to.equal(httpStatus.HTTP_STATUS_OK);
     })
-  })
-})
+  });
+});
