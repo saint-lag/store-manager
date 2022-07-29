@@ -39,6 +39,12 @@ describe('Testing productsController', async () => {
     })
   });
   describe('Function: getById(3)', () => {
+    before(async () => {
+      sinon.stub(service, 'getById').resolves();
+    });
+    after(async () => {
+      sinon.stub(service, 'getById').restore();
+    });
     it('Should return STATUS 200 when solved', async () => {
       const req = {
         params: {
