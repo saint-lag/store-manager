@@ -64,4 +64,45 @@ describe('Testing productsController', async () => {
       chai.expect(res.status.getCall(0).args[0]).to.equal(httpStatus.HTTP_STATUS_OK);
     })
   });
+  /*describe('Function: insertIntoDatabase()', async () => {
+    before(async () => {
+      sinon.stub(service, 'insertIntoDatabase').resolves();
+    });
+    after(async () => {
+      sinon.stub(service, 'insertIntoDatabase').restore();
+    });
+
+    it('should return 201 when created', async () => {
+      const req = {
+        body: {
+          name: "ProdutoX"
+        }
+      };
+
+      const res = {
+        status: sinon.stub().callsFake(() => res),
+        json: sinon.stub().returns(),
+      };
+
+      await controller.insertIntoDatabase(req, res);
+      chai.expect(res.status.getCall(0).args[0]).to.equal(httpStatus.HTTP_STATUS_CREATED);
+    });
+
+    it('json should contain "ProdutoX" as name', async () => {
+      const req = {
+        body: {
+          name: "ProdutoX"
+        }
+      };
+
+      const res = {
+        status: sinon.stub().callsFake(() => res),
+        json: sinon.stub().returns(),
+      };
+
+      await controller.insertIntoDatabase(req, res);
+      console.log(res);
+      //chai.expect(res.json.getCall(0).args[0]).to.equal();
+    });
+  });*/
 });
