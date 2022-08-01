@@ -6,7 +6,8 @@ const mocks = require('../mocks');
 const {
   getAll,
   getById,
-  searchProduct
+  searchProduct,
+  insertIntoDatabase
 } = require('../../../services/productsServices');
 
 describe('Testing productsServices', () => {
@@ -36,28 +37,28 @@ describe('Testing productsServices', () => {
       expect(res[0]).to.have.a.property('id')
         .to.equal(QUERY_ID);
     });
+  });
 
-    describe('Function getById()', async () => {
-      const QUERY_ID = mocks.GET_ALL_PRODUCTS[1].id;
-      const QUERY_NAME = mocks.GET_ALL_PRODUCTS[1].name;
+  describe('Function: getById()', async () => {
+    const QUERY_ID = mocks.GET_ALL_PRODUCTS[1].id;
+    const QUERY_NAME = mocks.GET_ALL_PRODUCTS[1].name;
 
-      it('should return an object', async () => {
-        const res = await getById(2);
-        expect(res).to.be.an('object');
-      });
-      it('should have property "id"', async () => {
-        const res = await getById(2);
-        expect(res).to.have.a.property('id');
-      });
-      it('should have a property "name"', async () => {
-        const res = await getById(2);
-        expect(res).to.have.a.property('name');
-      });
-      it('should equal: { "id": 2, "name": "Traje de encolhimento"}', async () => {
-        const res = await getById(2);
-        expect(res.id).to.equal(QUERY_ID);
-        expect(res.name).to.equal(QUERY_NAME);
-      })
+    it('should return an object', async () => {
+      const res = await getById(2);
+      expect(res).to.be.an('object');
     });
+    it('should have property "id"', async () => {
+      const res = await getById(2);
+      expect(res).to.have.a.property('id');
+    });
+    it('should have a property "name"', async () => {
+      const res = await getById(2);
+      expect(res).to.have.a.property('name');
+    });
+    it('should equal: { "id": 2, "name": "Traje de encolhimento"}', async () => {
+      const res = await getById(2);
+      expect(res.id).to.equal(QUERY_ID);
+      expect(res.name).to.equal(QUERY_NAME);
+    })
   });
 })

@@ -31,23 +31,31 @@ describe('Testing productsModels', () => {
       expect(res).to.have.a.property('name');
     });
   });
-})
+  /*describe('Function: getById()', async () => {
+    it('should return an object', async () => {
+      const res = await getById(2);
+      expect(res).to.be.an('object');
+    });
+    it('should have property "id"', async () => {
+      const res = await getById('2');
+      expect(res).to.have.a.property('id');
+    });
+    it('should have a property "name"', async () => {
+      const res = await getById('2');
+      expect(res).to.have.a.property('name');
+    });
+  });
+  describe('Function: searchByName(searchTerm)', async () => {
+    it('should find: { id: 3, name: Escudo do Capitão América}', async () => {
+      const res = await searchByName('Escudo');
+      const QUERY_ID = mocks.GET_ALL_PRODUCTS[2].id;
+      const QUERY_NAME = mocks.GET_ALL_PRODUCTS[2].name;
 
-/*
-describe('Function getById()', async () => {
-  it('should return an object', async () => {
-    const res = await getById(1);
-    expect(res).to.be.an('object');
-  });
-  it('should have property "id"', async () => {
-    const res = await getById('2');
-    expect(res).to.have.a.property('id');
-  });
-  it('should have a property "name"', async () => {
-    const res = await getById('2');
-    expect(res).to.have.a.property('name');
-  });
+      expect(res[0]).to.be.an('object');
+      expect(res[0]).to.have.a.property('name')
+        .to.equal(QUERY_NAME);
+      expect(res[0]).to.have.a.property('id')
+        .to.equal(QUERY_ID);
+    });
+  });*/
 });
-
-
-});*/

@@ -62,47 +62,26 @@ describe('Testing productsController', async () => {
 
       await controller.getById(req, res);
       chai.expect(res.status.getCall(0).args[0]).to.equal(httpStatus.HTTP_STATUS_OK);
-    })
+    });
+
+    it('should return the correct product', async () => {
+      const req = {
+        params: {
+          id: 3,
+        },
+        query: {
+          q: null,
+        }
+      }
+
+      const res = {
+        status: sinon.stub().callsFake(() => res),
+        json: sinon.stub().returns()
+      };
+      
+      
+      await controller.getById(req, res);
+      chai.expect(res.json.getCall(0).args[0]).to.deep.equal(mocks.GET_ALL_PRODUCTS[2]);
+    });
   });
-  /*describe('Function: insertIntoDatabase()', async () => {
-    before(async () => {
-      sinon.stub(service, 'insertIntoDatabase').resolves();
-    });
-    after(async () => {
-      sinon.stub(service, 'insertIntoDatabase').restore();
-    });
-
-    it('should return 201 when created', async () => {
-      const req = {
-        body: {
-          name: "ProdutoX"
-        }
-      };
-
-      const res = {
-        status: sinon.stub().callsFake(() => res),
-        json: sinon.stub().returns(),
-      };
-
-      await controller.insertIntoDatabase(req, res);
-      chai.expect(res.status.getCall(0).args[0]).to.equal(httpStatus.HTTP_STATUS_CREATED);
-    });
-
-    it('json should contain "ProdutoX" as name', async () => {
-      const req = {
-        body: {
-          name: "ProdutoX"
-        }
-      };
-
-      const res = {
-        status: sinon.stub().callsFake(() => res),
-        json: sinon.stub().returns(),
-      };
-
-      await controller.insertIntoDatabase(req, res);
-      console.log(res);
-      //chai.expect(res.json.getCall(0).args[0]).to.equal();
-    });
-  });*/
 });
